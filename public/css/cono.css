@@ -1,0 +1,583 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;600&display=swap');
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: aliceblue;
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    margin: 0;
+    color: #0f172a;
+    overflow: hidden;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+}
+
+
+.container {
+    width: 90%;
+    max-width: 90%;
+    margin-inline: auto;
+}
+
+/*  header section css  */
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    background-color: aliceblue;
+    /* box-shadow: 0 10px 10px rgb(0, 0, 0, 0.2); */
+    z-index: 1000;
+}
+
+
+.h-main-con {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 70px;
+}
+
+
+.h-p-con {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+
+.h-p-con p {
+    font-size: 10px;
+    color: rgb(103, 104, 104);
+    /* background-color: rgb(107, 105, 105); */
+    /* border-radius: 50px; */
+    /* box-sizing: border-box; */
+    /* padding: 10px 20px; */
+}
+
+.h-p-con a {
+    font-size: 12px;
+    color: black;
+    background-color: rgb(107, 105, 105);
+    border-radius: 50px;
+    box-sizing: border-box;
+    padding: 10px 20px;
+}
+
+
+.h-p-con a:hover {
+    background-color: rgb(204, 199, 199);
+    /* color: white; */
+    transition: 0.3s;
+}
+
+
+
+/* ------------------s-main-con------------ */
+
+
+
+  .containerr {
+    width: 100%;
+    max-width: 380px;
+    padding: 0 24px;
+  }
+
+  h1 {
+    font-size: 30px;
+    font-weight: 600;
+    text-align: center;
+    margin: 0 0 30px;
+    text-align: left;
+  }
+
+  .inputwrapper {
+    position: relative;
+    margin-bottom: 24px;
+  }
+
+  input {
+    width: 100%;
+    height: 56px;
+    padding: 0 16px;
+    font-size: 16px;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    background-color: #f8f9fa;
+    outline: none;
+    box-sizing: border-box;
+    transition: all 0.22s ease;
+  }
+
+  /* Normal state */
+  input:focus {
+    border-color: #3b82f6;
+    background-color: #fff;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+  }
+
+  /* Error state (exactly like your screenshot) */
+  input.error {
+    border-color: #ef4444;
+    background-color: #fef2f2;
+  }
+
+  input.error:focus {
+    border-color: #ef4444;
+    background-color: #fff;
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15);
+  }
+
+  /* Placeholder styling */
+  input::placeholder {
+    color: #94a3b8;
+  }
+
+  /* Error message */
+  #error-msg {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    margin-top: 6px;
+    color: #ef4444;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  #error-msg::before {
+    content: "!";
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    background: #ef4444;
+    color: white;
+    border-radius: 50%;
+    font-size: 13px;
+    font-weight: bold;
+    flex-shrink: 0;
+  }
+
+  /* Continue button – exact colors & shape */
+  .btn {
+    width: 100%;
+    height: 56px;
+    background: #0f172a;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    margin: 32px 0 24px;
+    transition: background 0.2s ease;
+  }
+
+  .btn:hover {
+    background: #1e293b;
+  }
+
+  .btn:active {
+    transform: translateY(1px);
+  }
+
+  /* OR separator */
+  .separator {
+    text-align: center;
+    color: #64748b;
+    font-size: 14px;
+    position: relative;
+    margin: 32px 0;
+  }
+
+  .separator::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #bfcfe4;
+  }
+
+  .separator span {
+    background: #c8c5c5;
+    padding: 0 16px;
+  }
+
+
+  .btnn {
+    width: 100%;
+    height: 56px;
+    background: #e6e8eb;
+    color: #0f172a;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    margin: 32px 0 24px;
+    transition: background 0.2s ease;
+  }
+
+  .btnn:hover {
+    background: #d1d5db;
+  }
+
+
+
+  .btnn i {
+    color: red;
+    font-size: 20px;
+}
+
+
+
+
+
+.indices-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .index-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      border-left: 4px solid #f59e0b;
+      transition: transform 0.2s;
+    }
+    .index-card:hover {
+      transform: translateY(-2px);
+    }
+    .index-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .index-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: white;
+    }
+    .sp500 { background: #dc2626; }
+    .nasdaq { background: #059669; }
+    .dow { background: #3b82f6; }
+    .nikkei { background: #ea580c; }
+    .dax { background: #8b5cf6; }
+    .ftse { background: #84cc16; }
+    .index-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #64748b;
+    }
+    .index-value {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .change {
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .positive { color: #059669; }
+    .negative { color: #dc2626; }
+       .chart-container {
+          background: #1D1D1D;
+          border-radius: 16px;
+          padding: 28px;
+          margin: 100px auto 40px;     /* space from header + bottom */
+          max-width: 1100px;
+          width: 95%;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+          color: white;
+          position: relative;
+          overflow: hidden;            /* important */
+        }
+
+
+    .tradingview-widget-container {
+      position: absolute;
+      top: 0;
+    }
+    #indicesChart {
+      max-height: 60vh;
+    }
+    @media (max-width: 768px) {
+      .indices-grid {
+        grid-template-columns: 1fr;
+      }
+      .index-value {
+        font-size: 20px;
+      }
+    }
+
+
+    .h2-p {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        gap: 10px;
+        flex-direction: row;
+    }
+
+    p span {
+        font-size: 26px;
+        color: green;
+        margin: 0;
+    }
+
+    p span i {
+        font-size:50px;
+    }
+
+    .pp {
+        margin: 0;
+        color: gray;
+    }
+
+
+
+    .tv-box {
+        width: 500;
+        height: 300;
+        background: #1D1D1D;
+        border-radius: 12px;
+        margin-top: 20px;
+        /* overflow: hidden; fixes rounded corners */
+    }
+
+
+
+
+
+
+
+
+
+
+    .c-r {
+        text-align: center;
+        padding: 10px;
+        font-size: 14px;
+        color: rgb(103, 104, 104);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+
+    .c-r p {
+      color: rgb(103, 104, 104);
+    }
+
+    .c-r p span {
+      color: rgb(103, 104, 104);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ----------------tablet----------------- */
+
+@media screen and (max-width: 1024px) {
+    .h-p-con a {
+        /* padding: 8px 16px; */
+        font-size: 10px;
+    }
+
+    .h-p-con p {
+        font-size: 8px;
+        /* color: aliceblue; */
+    }
+
+
+
+}
+
+
+
+
+
+
+
+@media screen and (max-width: 768px) {
+    .h-p-con a {
+        padding: 8px 10px;
+        font-size: 8px;
+    }
+
+    .h-p-con p {
+        font-size: 6px;
+        text-decoration-color: aliceblue;
+        color: aliceblue;
+    }
+
+
+
+}
+
+ @media (max-width: 480px) {
+      .containerr {
+        padding: 32px 24px;
+        margin: 10px;
+      }
+    }
+
+
+
+
+
+
+
+
+

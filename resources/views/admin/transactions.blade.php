@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manage Transactions - SUNHILL Admin</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    body {
+      background: #000;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+    }
+
+    /* Sidebar - same as other pages */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 260px;
+      background: #0f0f0f;
+      border-right: 1px solid #222;
+      padding: 1.5rem 1rem;
+      overflow-y: auto;
+      z-index: 1000;
+    }
+
+    .sidebar-brand {
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: #fff;
+      text-decoration: none;
+      display: block;
+      padding: 1rem 0 2rem;
+      text-align: center;
+      border-bottom: 1px solid #333;
+    }
+
+    .sidebar-brand span {
+      color: #ef4444;
+    }
+
+    .nav-link {
+      color: #ccc;
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0.25rem 0;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      background: #1a1a1a;
+      color: #fff;
+    }
+
+    .main-content {
+      margin-left: 260px;
+      padding: 2rem;
+    }
+
+    @media (max-width: 992px) {
+      .sidebar { width: 220px; }
+      .main-content { margin-left: 220px; }
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        border-right: none;
+        border-bottom: 1px solid #222;
+      }
+      .main-content {
+        margin-left: 0;
+        padding-top: 1rem;
+      }
+    }
+
+    .card-dark {
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      transition: transform 0.25s;
+    }
+
+    .card-dark:hover {
+      transform: translateY(-6px);
+    }
+
+    .stat-icon {
+      font-size: 2.8rem;
+      opacity: 0.85;
+    }
+
+    .table-dark thead th {
+      background: #1a1a1a;
+      color: #ccc;
+      border-bottom: 1px solid #444;
+    }
+
+    .table-dark td {
+      border-color: #333;
+      vertical-align: middle;
+    }
+
+    .badge {
+      font-size: 0.9rem;
+      padding: 0.5em 1em;
+    }
+
+    .badge-deposit    { background: #22c55e; color: white; }
+    .badge-withdrawal { background: #ef4444; color: white; }
+    .badge-bonus      { background: #f59e0b; color: #000; }
+    .badge-pending    { background: #3b82f6; color: white; }
+
+    .search-input {
+      background: #1a1a1a;
+      border: 1px solid #444;
+      color: #fff;
+    }
+
+    .search-input:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 0.25rem rgba(59,130,246,0.25);
+    }
+
+    .filter-btn {
+      background: #1a1a1a;
+      border: 1px solid #444;
+      color: #ccc;
+    }
+
+    .filter-btn.active,
+    .filter-btn:hover {
+      background: #3b82f6;
+      color: white;
+      border-color: #3b82f6;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Sidebar Navigation -->
+<aside class="sidebar">
+  <a href="{{ route('admin.dashboard') }}" class="sidebar-brand">SUNHILL <span>Admin</span></a>
+  <nav class="mt-4">
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a href="{{ route('admin.dashboard') }}" class="nav-link">
+          <i class="bi bi-speedometer2"></i> Dashboard
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ route('admin.users') }}" class="nav-link">
+          <i class="bi bi-people-fill"></i> Users
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ route('admin.deposits') }}" class="nav-link">
+          <i class="bi bi-currency-dollar"></i> Deposits
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ route('admin.withdrawals') }}" class="nav-link">
+          <i class="bi bi-cash-stack"></i> Withdrawals
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ route('admin.packages') }}" class="nav-link">
+          <i class="bi bi-bag-check"></i> Plans / Packages
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ route('admin.transactions') }}" class="nav-link active">
+          <i class="bi bi-receipt"></i> Transactions
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ route('admin.reports') }}" class="nav-link">
+          <i class="bi bi-graph-up"></i> Reports
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ route('admin.settings') }}" class="nav-link">
+          <i class="bi bi-gear-fill"></i> Settings
+        </a>
+      </li>
+    </ul>
+
+    <hr class="text-secondary my-4">
+
+    <div class="nav-link text-danger cursor-pointer">
+      <i class="bi bi-box-arrow-right"></i> Logout
+    </div>
+  </nav>
+</aside>
+
+<!-- Main Content -->
+<main class="main-content">
+  <div class="container-fluid px-0">
+
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-5 flex-wrap gap-3">
+      <h1 class="display-5 fw-bold mb-0">Manage Transactions</h1>
+      <span class="text-secondary">February 24, 2026</span>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="row g-4 mb-5">
+      <div class="col-xl-3 col-lg-6 col-md-6">
+        <div class="card card-dark text-center p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold mb-0">Total Transactions</h5>
+            <i class="bi bi-receipt stat-icon text-info"></i>
+          </div>
+          <h2 class="display-6 fw-bold mb-1">48,921</h2>
+          <p class="text-info small mb-0">All time</p>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-6 col-md-6">
+        <div class="card card-dark text-center p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold mb-0">Deposits Today</h5>
+            <i class="bi bi-currency-dollar stat-icon text-success"></i>
+          </div>
+          <h2 class="display-6 fw-bold mb-1 text-success">$142,870</h2>
+          <p class="text-success small mb-0">+14% vs yesterday</p>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-6 col-md-6">
+        <div class="card card-dark text-center p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold mb-0">Withdrawals Today</h5>
+            <i class="bi bi-cash-stack stat-icon text-danger"></i>
+          </div>
+          <h2 class="display-6 fw-bold mb-1 text-danger">$87,420</h2>
+          <p class="text-danger small mb-0">8 pending</p>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-6 col-md-6">
+        <div class="card card-dark text-center p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold mb-0">Pending Transactions</h5>
+            <i class="bi bi-hourglass-split stat-icon text-warning"></i>
+          </div>
+          <h2 class="display-6 fw-bold mb-1 text-warning">193</h2>
+          <p class="text-warning small mb-0">Awaiting review</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search & Filters -->
+    <div class="card card-dark mb-5">
+      <div class="card-body">
+        <div class="row g-3 align-items-center">
+          <div class="col-md-5">
+            <div class="input-group input-group-lg">
+              <span class="input-group-text bg-dark border-secondary"><i class="bi bi-search"></i></span>
+              <input type="text" class="form-control search-input" placeholder="Search by TXN ID, user, amount...">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="btn-group flex-wrap gap-2 w-100" role="group">
+              <button type="button" class="btn filter-btn active px-4 py-2">All</button>
+              <button type="button" class="btn filter-btn px-4 py-2">Deposits</button>
+              <button type="button" class="btn filter-btn px-4 py-2">Withdrawals</button>
+              <button type="button" class="btn filter-btn px-4 py-2">Bonuses</button>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <select class="form-select form-select-lg form-control-dark">
+              <option>All Status</option>
+              <option>Completed</option>
+              <option>Pending</option>
+              <option>Failed</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transactions Table -->
+    <div class="card card-dark shadow-lg overflow-hidden">
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-dark table-hover table-borderless mb-0">
+            <thead>
+              <tr>
+                <th scope="col">TXN ID</th>
+                <th scope="col">User</th>
+                <th scope="col">Type</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Method</th>
+                <th scope="col">Date</th>
+                <th scope="col">Status</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Example rows – replace with real loop -->
+              <tr>
+                <td>TXN-987654321</td>
+                <td>John Doe (USER-001247)</td>
+                <td>Deposit</td>
+                <td class="text-success">+$2,500.00</td>
+                <td>USDT (TRC20)</td>
+                <td>Feb 20, 2026 14:35</td>
+                <td><span class="badge badge-completed">Completed</span></td>
+                <td>
+                  <button class="btn btn-sm btn-outline-light"><i class="bi bi-eye"></i> View</button>
+                </td>
+              </tr>
+              <tr>
+                <td>TXN-987654320</td>
+                <td>Jane Smith (USER-001246)</td>
+                <td>Withdrawal</td>
+                <td class="text-danger">-$1,200.00</td>
+                <td>Bitcoin (BTC)</td>
+                <td>Feb 18, 2026 09:12</td>
+                <td><span class="badge badge-pending">Pending</span></td>
+                <td>
+                  <button class="btn btn-sm btn-outline-light"><i class="bi bi-eye"></i> View</button>
+                </td>
+              </tr>
+              <tr>
+                <td>TXN-987654319</td>
+                <td>Michael Brown (USER-001245)</td>
+                <td>Bonus</td>
+                <td class="text-warning">+$150.00</td>
+                <td>Referral Bonus</td>
+                <td>Feb 15, 2026 11:20</td>
+                <td><span class="badge badge-bonus">Credited</span></td>
+                <td>
+                  <button class="btn btn-sm btn-outline-light"><i class="bi bi-eye"></i> View</button>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="8" class="text-center text-muted py-5">
+                  No more transactions found.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card-footer bg-transparent border-top border-secondary">
+        <nav aria-label="Transactions pagination">
+          <ul class="pagination justify-content-center mb-0">
+            <li class="page-item disabled"><span class="page-link">Previous</span></li>
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
