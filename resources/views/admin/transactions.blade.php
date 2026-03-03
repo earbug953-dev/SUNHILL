@@ -204,7 +204,13 @@
     <hr class="text-secondary my-4">
 
     <div class="nav-link text-danger cursor-pointer">
-      <i class="bi bi-box-arrow-right"></i> Logout
+      <form method="POST" action="{{ url('/logout') }}"
+          onsubmit="return confirm('Are you sure you want to logout?')">
+          @csrf
+        <button class="nav-link text-danger border-0 bg-transparent">
+            <i class="bi bi-box-arrow-right me-2"></i> Logout
+        </button>
+        </form>
     </div>
   </nav>
 </aside>
@@ -315,61 +321,133 @@
             </thead>
             <tbody>
               <!-- Example rows – replace with real loop -->
-              <tr>
-                <td>TXN-987654321</td>
-                <td>John Doe (USER-001247)</td>
-                <td>Deposit</td>
-                <td class="text-success">+$2,500.00</td>
-                <td>USDT (TRC20)</td>
-                <td>Feb 20, 2026 14:35</td>
-                <td><span class="badge badge-completed">Completed</span></td>
-                <td>
-                  <button class="btn btn-sm btn-outline-light"><i class="bi bi-eye"></i> View</button>
-                </td>
-              </tr>
-              <tr>
-                <td>TXN-987654320</td>
-                <td>Jane Smith (USER-001246)</td>
-                <td>Withdrawal</td>
-                <td class="text-danger">-$1,200.00</td>
-                <td>Bitcoin (BTC)</td>
-                <td>Feb 18, 2026 09:12</td>
-                <td><span class="badge badge-pending">Pending</span></td>
-                <td>
-                  <button class="btn btn-sm btn-outline-light"><i class="bi bi-eye"></i> View</button>
-                </td>
-              </tr>
-              <tr>
-                <td>TXN-987654319</td>
-                <td>Michael Brown (USER-001245)</td>
-                <td>Bonus</td>
-                <td class="text-warning">+$150.00</td>
-                <td>Referral Bonus</td>
-                <td>Feb 15, 2026 11:20</td>
-                <td><span class="badge badge-bonus">Credited</span></td>
-                <td>
-                  <button class="btn btn-sm btn-outline-light"><i class="bi bi-eye"></i> View</button>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="8" class="text-center text-muted py-5">
-                  No more transactions found.
-                </td>
-              </tr>
+
+              @forelse ($deposits as $deposit)
+                <tr>
+                  <td>{{ $deposit->txn_id ?? 'DEP-' . str_pad($deposit->id, 8, '0', STR_PAD_LEFT) }}</td>
+                  <td>{{ $deposit->user->name ?? 'N/A' }} ({{ $deposit->user->id ?? 'N/A' }})</td>
+                  <td><span class="badge badge-deposit">Deposit</span></td>
+                  <td class="text-success">+${{ number_format($deposit->amount, 2) }}</td>
+                  <td>{{ ucfirst($deposit->payment_method) }}</td>
+                  <td>{{ $deposit->created_at->format('M d, Y H:i') }}</td>
+                  <td><span class="badge bg-{{ $deposit->status == 'approved' ? 'success' : ($deposit->status == 'rejected' ? 'danger' : 'warning') }}">{{ ucfirst($deposit->status) }}</span></td>
+                  <td>
+                    <button class="btn btn-sm btn-outline-light"
+                            data-bs-toggle="modal"
+                            data-bs-target="#viewTransactionModal{{ $deposit->id }}">
+                      <i class="bi bi-eye"></i> View
+                    </button>
+                  </td>
+                </tr>
+              @empty
+                <!-- If no deposits, we'll show withdrawals or empty message below -->
+              @endforelse
+
+              @forelse ($withdrawals as $withdrawal)
+                <tr>
+                  <td>{{ $withdrawal->txn_id ?? 'WD-' . str_pad($withdrawal->id, 8, '0', STR_PAD_LEFT) }}</td>
+                  <td>{{ $withdrawal->user->name ?? 'N/A' }} ({{ $withdrawal->user->id ?? 'N/A' }})</td>
+                  <td><span class="badge badge-withdrawal">Withdrawal</span></td>
+                  <td class="text-danger">-${{ number_format($withdrawal->amount, 2) }}</td>
+                  <td>{{ ucfirst($withdrawal->payment_method) }}</td>
+                  <td>{{ $withdrawal->created_at->format('M d, Y H:i') }}</td>
+                  <td><span class="badge bg-{{ $withdrawal->status == 'completed' ? 'success' : ($withdrawal->status == 'cancelled' ? 'danger' : 'warning') }}">{{ ucfirst($withdrawal->status) }}</span></td>
+                  <td>
+                    <button class="btn btn-sm btn-outline-light"
+                            data-bs-toggle="modal"
+                            data-bs-target="#viewTransactionModal{{ $withdrawal->id }}">
+                      <i class="bi bi-eye"></i> View
+                    </button>
+                  </td>
+                </tr>
+              @empty
+                @if ($deposits->isEmpty() && $withdrawals->isEmpty())
+                  <tr>
+                    <td colspan="8" class="text-center text-muted py-5">
+                      No transactions found.
+                    </td>
+                  </tr>
+                @endif
+              @endforelse
             </tbody>
           </table>
         </div>
       </div>
+
+      <!-- Pagination (combined or separate) -->
       <div class="card-footer bg-transparent border-top border-secondary">
-        <nav aria-label="Transactions pagination">
-          <ul class="pagination justify-content-center mb-0">
-            <li class="page-item disabled"><span class="page-link">Previous</span></li>
-            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-          </ul>
-        </nav>
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="text-secondary">
+            Showing {{ $deposits->firstItem() + $withdrawals->firstItem() }} -
+            {{ $deposits->lastItem() + $withdrawals->lastItem() }} of
+            {{ $deposits->total() + $withdrawals->total() }} transactions
+          </div>
+          <div>
+            {{ $deposits->links('pagination::bootstrap-5') }}
+            {{ $withdrawals->links('pagination::bootstrap-5') }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- View Transaction Modal (shared for deposits & withdrawals) -->
+@foreach ([$deposits, $withdrawals] as $collection)
+  @forelse ($collection as $tx)
+    <div class="modal fade" id="viewTransactionModal{{ $tx->id }}" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content card-dark border-0 shadow-lg">
+          <div class="modal-header border-bottom border-secondary">
+            <h5 class="modal-title fw-bold fs-4">
+              {{ $tx instanceof \App\Models\Deposit ? 'Deposit' : 'Withdrawal' }} Details
+              <small class="text-muted ms-2">TXN-{{ $tx->txn_id ?? $tx->id }}</small>
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body p-4">
+            <div class="row g-4">
+              <div class="col-md-6">
+                <p><strong>User:</strong> {{ $tx->user->name ?? 'N/A' }} (ID: {{ $tx->user->id ?? 'N/A' }})</p>
+                <p><strong>Email:</strong> {{ $tx->user->email ?? 'N/A' }}</p>
+                <p><strong>Amount:</strong>
+                  <span class="{{ $tx instanceof \App\Models\Deposit ? 'text-success' : 'text-danger' }}">
+                    {{ $tx instanceof \App\Models\Deposit ? '+' : '-' }}${{ number_format($tx->amount, 2) }}
+                  </span>
+                </p>
+              </div>
+              <div class="col-md-6">
+                <p><strong>Method:</strong> {{ ucfirst($tx->payment_method) }}</p>
+                <p><strong>Status:</strong>
+                  <span class="badge bg-{{ $tx->status == 'approved' ? 'success' : ($tx->status == 'rejected' ? 'danger' : 'warning') }}">{{ ucfirst($tx->status) }}</span>
+                </p>
+                <p><strong>Date:</strong> {{ $tx->created_at->format('M d, Y • h:i A') }}</p>
+              </div>
+            </div>
+
+            @if($tx->proof_image)
+              <div class="mt-4">
+                <label class="fw-semibold text-secondary">Proof of Payment</label>
+                <a href="{{ Storage::url($tx->proof_image) }}" target="_blank" class="btn btn-outline-light btn-sm mt-2">
+                  <i class="bi bi-eye me-1"></i> View Proof
+                </a>
+              </div>
+            @endif
+          </div>
+          <div class="modal-footer border-top border-secondary">
+            <button type="button" class="btn btn-outline-light px-4" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  @empty
+    <!-- No modal if empty -->
+  @endforelse
+@endforeach
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 

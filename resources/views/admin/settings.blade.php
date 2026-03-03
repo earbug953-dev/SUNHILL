@@ -181,7 +181,13 @@
     <hr class="text-secondary my-4">
 
     <div class="nav-link text-danger cursor-pointer">
-      <i class="bi bi-box-arrow-right"></i> Logout
+      <form method="POST" action="{{ url('/logout') }}"
+          onsubmit="return confirm('Are you sure you want to logout?')">
+          @csrf
+        <button class="nav-link text-danger border-0 bg-transparent">
+            <i class="bi bi-box-arrow-right me-2"></i> Logout
+        </button>
+        </form>
     </div>
   </nav>
 </aside>
