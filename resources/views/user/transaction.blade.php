@@ -226,59 +226,40 @@
             <tbody>
               <!-- Example rows – replace with real  loop -->
               <!-- Example row inside your table -->
+              @forelse ($withdrawals as $withdrawal)
+
+
               <tr>
-                <td>TXN-987654321</td>
-                <td>Deposit</td>
-                <td class="text-success">+$2,500.00</td>
-                <td>USDT (TRC20) deposit via wallet</td>
-                <td>Feb 20, 2026 14:35</td>
-                <td><span class="badge badge-deposit">Completed</span></td>
+                <td>{{ $withdrawal->tx_ref }}</td>
+                <td>Withdrawal</td>
+                <td class="text-danger">-${{ number_format($withdrawal->amount, 2) }}</td>
+                <td>{{ ucfirst($withdrawal->payment_method) }}</td>
+                <td>{{ $withdrawal->created_at->format('F j, Y g:i A') }}</td>
+                <td><span class="badge badge-withdrawal">Completed</span></td>
                 <td>
                     <button class="btn btn-sm btn-outline-light"
                             data-bs-toggle="modal"
                             data-bs-target="#transactionModal"
-                            data-txn-id="TXN-987654321"
-                            data-type="Deposit"
-                            data-amount="2500.00"
-                            data-currency="USDT (TRC20)"
-                            data-description="Deposit via wallet (TRC20 network)"
-                            data-date="February 20, 2026 14:35"
-                            data-status="Completed"
+                            data-txn-id="{{ $withdrawal->tx_ref }}"
+                            data-type="Withdrawal"
+                            data-amount="{{ $withdrawal->amount }}"
+                            data-currency="USD"
+                            data-description="{{ ucfirst($withdrawal->payment_method) }} withdrawal via wallet"
+                            data-date="{{ $withdrawal->created_at->format('F j, Y g:i A') }}"
+                            data-status=""
                             data-wallet="rnUBfNn28ZU5kbvHCIMZhUc1WZ5d1qWZp"
                             data-tx-hash="0xabcdef1234567890...">
                     <i class="bi bi-eye"></i> View
                     </button>
                 </td>
               </tr>
-              <tr>
-                <td>TXN-987654320</td>
-                <td>Withdrawal</td>
-                <td class="text-danger">-$1,200.00</td>
-                <td>Bitcoin withdrawal request</td>
-                <td>Feb 18, 2026 09:12</td>
-                <td><span class="badge badge-processing">Processing</span></td>
-              </tr>
-              <tr>
-                <td>TXN-987654319</td>
-                <td>Bonus</td>
-                <td class="text-warning">+$150.00</td>
-                <td>Referral bonus (Level 2)</td>
-                <td>Feb 15, 2026 11:20</td>
-                <td><span class="badge badge-bonus">Credited</span></td>
-              </tr>
-              <tr>
-                <td>TXN-987654318</td>
-                <td>Deposit</td>
-                <td class="text-success">+$500.00</td>
-                <td>Bank transfer deposit</td>
-                <td>Feb 10, 2026 16:45</td>
-                <td><span class="badge badge-deposit">Completed</span></td>
-              </tr>
-              <tr>
-                <td colspan="6" class="text-center text-muted py-5">
-                  No more transactions found.
-                </td>
-              </tr>
+                @empty
+                <tr>
+                    <td colspan="7" class="text-center text-secondary py-4">
+                        No transactions found.
+                    </td>
+              @endforelse
+
             </tbody>
           </table>
         </div>

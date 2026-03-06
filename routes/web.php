@@ -55,8 +55,12 @@ Route::prefix('user')->middleware(['auth'])->group(function () {
     Route::put('/profile/{user}',[UserController::class, 'edit_profile'])->name('edit.profile');
     Route::put('/password/{user}',[UserController::class, 'change_password'])->name('change.password');
     Route::get('/transactions', function () {
-        return view('user.transaction');
-    })->name('user.transactions');
+    $withdrawals = Withdrawal::where('user_id', auth()->id())
+        ->latest()
+        ->get();
+
+    return view('user.transaction', compact('withdrawals'));
+})->name('user.transactions');
     Route::get('/withdraw', function () {
     $withdrawals = Withdrawal::where('user_id', auth()->id())
         ->latest()
