@@ -52,6 +52,19 @@ class AdminController extends Controller
     }
 
     public function transactions() {
+        $deposits = Deposit::with('user')
+            ->whereHas('user', function ($query) {
+                $query->where('role', '!=', 'admin');
+            })
+            ->latest()
+            ->get();
+        $withdrawals = Withdrawal::with('user')
+            ->whereHas('user', function ($query) {
+                $query->where('role', '!=', 'admin');
+            })
+            ->latest()
+            ->get();
+        $users = User::where('role', '!=', 'admin')->get();
         return view('admin.transactions', compact('deposits', 'withdrawals', 'users'));
     }
 
