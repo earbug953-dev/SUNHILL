@@ -202,6 +202,8 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
+
+        
         <div class="offcanvas offcanvas-end bg-dark" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title text-white" id="offcanvasNavbarLabel">Menu</h5>
