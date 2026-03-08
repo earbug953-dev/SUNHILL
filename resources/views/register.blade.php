@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>sunhill Registration</title>
+  <title>TESLA Registration</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
@@ -23,7 +23,7 @@
     }
 
     .container {
-      background: rgba(255, 255, 255, 0.05);
+      background: black;
       backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 16px;
@@ -168,7 +168,7 @@
 <body>
   <div class="container">
     <div class="logo">
-      <h1>SUNHILL</h1>
+      <h1><img src="{{ asset('images/logo.png') }}" width="100" height="50" alt="TESLA Logo"></h1>
     </div>
     <p class="subtitle">Create your account to start trading securely.</p>
 
@@ -222,17 +222,12 @@
         <input type="password" name="password_confirmation" id="confirm-password" placeholder="Confirm your password">
       </div>
 
-      <div class="checkbox-group">
-        <input type="checkbox" id="terms">
-        <label for="terms">
-          I agree to the <a href="terms.html" target="blank" style="color: #4f46e5;">Terms of Service</a> and <a href="#" style="color: #4f46e5;">Privacy Policy</a>
-        </label>
-      </div>
+
 
       <button type="submit" class="btn">Create Account</button>
 
       <div class="login-link">
-        Already have an account? <a href="home.php">Sign in</a>
+        Already have an account? <a href="{{ route('login') }}">Sign in</a>
       </div>
     </form>
   </div>

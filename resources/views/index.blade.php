@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sunhill</title>
+    <title>TESLA</title>
 
     <!-- Bootstrap 5 CSS -->
     {{-- <link rel="stylesheet" href="{{ asset('bootstrap5/css/bootstrap.min.css') }}"> --}}
@@ -175,6 +175,9 @@
         footer a:hover {
             color: #fff !important;
         }
+        nav {
+            background-color : black;
+        }
     </style>
 </head>
 <body>
@@ -191,9 +194,9 @@
 </div>
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <div class="container">
-        <a class="navbar-brand fw-bold fs-3" href="{{ route('home') }}">SUNHILL</a>
+        <a class="navbar-brand fw-bold fs-3" href="{{ route('home') }}"><img src="{{ asset('images/logo.png') }}" width="100" height="50" alt="TESLA Logo"></a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
             <span class="navbar-toggler-icon"></span>
@@ -206,45 +209,8 @@
             </div>
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                    <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">HOME</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('about') }}">ABOUT</a></li>
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">MARKETS</a>
-                        <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item" href="https://bitcoinworld.co.in/forex-news/" target="_blank">Forex</a></li>
-                            <li><a class="dropdown-item" href="https://bitcoinworld.co.in/crypto-news/" target="_blank">Cryptos</a></li>
-                            <li><a class="dropdown-item" href="#">Shares</a></li>
-                            <li><a class="dropdown-item" href="#">Indices</a></li>
-                            <li><a class="dropdown-item" href="#">Marijuana</a></li>
-                            <li><a class="dropdown-item" href="#">Energies</a></li>
-                            <li><a class="dropdown-item" href="#">Metals</a></li>
-                        </ul>
-                    </li>
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">TRADING</a>
-                        <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item" href="{{ route('register') }}">Platform</a></li>
-                            <li><a class="dropdown-item" href="{{ route('register') }}">Swaps</a></li>
-                            <li><a class="dropdown-item" href="{{ route('register') }}">Spreads and Commissions</a></li>
-                            <li><a class="dropdown-item" href="{{ route('register') }}">Trading Specifications</a></li>
-                            <li><a class="dropdown-item" href="{{ route('register') }}">PAMM</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">COMPANY</a>
-                        <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item" href="{{ route('register') }}">Why Us</a></li>
-                            <li><a class="dropdown-item" href="{{ route('register') }}">Contact</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item d-lg-none mt-3">
-                        <a href="{{ route('login') }}" class="btn btn-outline-light w-100 mb-2">Login</a>
-                        <a href="{{ route('register') }}" class="btn btn-primary w-100">Sign Up</a>
-                    </li>
                 </ul>
             </div>
         </div>
@@ -264,7 +230,7 @@
     <div class="hero-slide" style="background-image: url('{{ asset('images/michael.jpeg') }}'); ">
         <div class="container text-center text-white">
             <h1 class="display-3 fw-bold mb-4">Next Generation Crypto Trading Platform</h1>
-            <p class="lead mb-4">Sunhill is an award-winning platform that allows you to trade global financial markets using Bitcoin, USD Tether, USDC and more</p>
+            <p class="lead mb-4">TESLA is an award-winning platform that allows you to trade global financial markets using Bitcoin, USD Tether, USDC and more</p>
             <a href="{{ route('register') }}" class="btn btn-light btn-lg px-5 py-3">Get Started</a>
         </div>
     </div>
@@ -803,61 +769,7 @@
   <div class="container">
     <div class="row g-5">
 
-      <!-- Column 1: MARKETS -->
-      <div class="col-6 col-md-3 col-lg-2">
-        <h5 class="fw-bold mb-4 text-uppercase">Markets</h5>
-        <ul class="list-unstyled d-grid gap-2">
-          <li><a href="#" class="text-white-75 text-decoration-none hover-white">Forex</a></li>
-          <li><a href="#" class="text-white-75 text-decoration-none hover-white">Cryptos</a></li>
-          <li><a href="#" class="text-white-75 text-decoration-none hover-white">Shares</a></li>
-          <li><a href="#" class="text-white-75 text-decoration-none hover-white">Indices</a></li>
-        </ul>
-      </div>
-
-      <!-- Column 2: TRADING -->
-      <div class="col-6 col-md-3 col-lg-2">
-        <h5 class="fw-bold mb-4 text-uppercase">Trading</h5>
-        <ul class="list-unstyled d-grid gap-2">
-          <li><a href="#" class="text-white-75 text-decoration-none hover-white">Platform</a></li>
-          <li><a href="#" class="text-white-75 text-decoration-none hover-white">Pricing</a></li>
-          <li><a href="#" class="text-white-75 text-decoration-none hover-white">PAMM</a></li>
-          <li><a href="#" class="text-white-75 text-decoration-none hover-white">Help Centre/FAQ</a></li>
-        </ul>
-      </div>
-
-      <!-- Column 3: COMPANY -->
-      <div class="col-6 col-md-3 col-lg-2">
-        <h5 class="fw-bold mb-4 text-uppercase">Company</h5>
-        <ul class="list-unstyled d-grid gap-2">
-          <li><a href="{{ route('about') }}" class="text-white-75 text-decoration-none hover-white">About Us</a></li>
-          <li><a href="" class="text-white-75 text-decoration-none hover-white">Why Us</a></li>
-          <li><a href="#" class="text-white-75 text-decoration-none hover-white">Contact Us</a></li>
-          <li>
-            <a href="#" class="text-white-75 text-decoration-none hover-white">
-              <i class="uil uil-whatsapp fs-4"></i> WhatsApp
-            </a>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Column 4: ACCOUNT -->
-      <div class="col-6 col-md-3 col-lg-2">
-        <h5 class="fw-bold mb-4 text-uppercase">Account</h5>
-        <ul class="list-unstyled d-grid gap-2">
-          <li><a href="{{ route('login') }}" class="text-white-75 text-decoration-none hover-white">Login</a></li>
-          <li><a href="{{ route('register') }}" class="text-white-75 text-decoration-none hover-white">Sign Up</a></li>
-        </ul>
-      </div>
-
-      <!-- Column 5: LEGAL -->
-      <div class="col-6 col-md-4 col-lg-2">
-        <h5 class="fw-bold mb-4 text-uppercase">Legal</h5>
-        <ul class="list-unstyled d-grid gap-2">
-          <li><a href="#" class="text-white-75 text-decoration-none hover-white">Privacy Policy</a></li>
-          <li><a href="#" class="text-white-75 text-decoration-none hover-white">Terms of Service</a></li>
-          <li><a href="#" class="text-white-75 text-decoration-none hover-white">Trade Certificate</a></li>
-        </ul>
-      </div>
+      
 
     </div>
   </div>
@@ -867,7 +779,7 @@
 <!-- Copyright Bar -->
 <div class="bg-black text-center py-4 border-top border-secondary">
   <p class="text-white-50 mb-0">
-    © <span id="year"></span> SUNHILL. All rights reserved.
+    © <span id="year"></span> TESLA. All rights reserved.
   </p>
 </div>
 

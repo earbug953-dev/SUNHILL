@@ -7,6 +7,7 @@ use App\Http\Controllers\PackagesController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WithdrawalController;
+use App\Models\Deposit;
 use App\Models\Package;
 use App\Models\Withdrawal;
 use Illuminate\Support\Facades\Route;
@@ -55,11 +56,14 @@ Route::prefix('user')->middleware(['auth'])->group(function () {
     Route::put('/profile/{user}',[UserController::class, 'edit_profile'])->name('edit.profile');
     Route::put('/password/{user}',[UserController::class, 'change_password'])->name('change.password');
     Route::get('/transactions', function () {
+    $deposits = Deposit::where('user_id', auth()->id())
+        ->latest()
+        ->get();
     $withdrawals = Withdrawal::where('user_id', auth()->id())
         ->latest()
         ->get();
 
-    return view('user.transaction', compact('withdrawals'));
+    return view('user.transaction', compact('withdrawals', 'deposits'));
 })->name('user.transactions');
     Route::get('/withdraw', function () {
     $withdrawals = Withdrawal::where('user_id', auth()->id())

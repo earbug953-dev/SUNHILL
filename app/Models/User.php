@@ -131,5 +131,8 @@ class User extends Authenticatable
         return \Carbon\Carbon::parse($this->created_at)->diffForHumans();
     }
 
-
+public function transactions()
+{
+    return $this->hasMany(Transaction::class);
+}
 }

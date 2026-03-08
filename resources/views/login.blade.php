@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sunhill - Sign In</title>
+    <title>TESLA - Sign In</title>
     <link rel="stylesheet" href="{{ asset('css/cono.css') }}">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.2.0/css/line.css">
 </head>
@@ -17,14 +17,14 @@
 
 <header>
     <div class="h-main-con container">
-        <h1>sunhill</h1>
+        <h1><img src="{{ asset('images/logo.png') }}" width="100" height="50" alt="TESLA Logo"></h1>
         <div class="h-p-con">
-            <p>Don’t have a Sunhill account?</p>
+            <p>Don’t have a TESLA account?</p>
             <a href="{{ route('register') }}" class="h-btn">Create a new account</a>
         </div>
     </div>
 </header>
-<button></button>
+
 
 <div class="containerr">
     <h1>Sign in</h1>
@@ -48,11 +48,7 @@
         <button type="submit" class="btn">Continue</button>
     </form>
 
-    <div class="separator"><span>OR</span></div>
-
-    <button class="btnn google">
-        <i class="uil uil-google"></i> Sign in with Google
-    </button>
+   
 </div>
 
 </body>

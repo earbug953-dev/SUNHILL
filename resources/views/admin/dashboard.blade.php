@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Dashboard - SUNHILL</title>
+  <title>Admin Dashboard - TESLA</title>
 
   <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -29,7 +29,7 @@
       left: 0;
       bottom: 0;
       width: 260px;
-      background: #0f0f0f;
+      background: black;
       border-right: 1px solid #222;
       padding: 1.5rem 1rem;
       overflow-y: auto;
@@ -131,7 +131,7 @@
 
 <!-- Sidebar Navigation -->
 <aside class="sidebar">
-  <a href="{{ route('admin.dashboard') }}" class="sidebar-brand">SUNHILL <span>Admin</span></a>
+  <a href="{{ route('admin.dashboard') }}" class="sidebar-brand"><img src="{{ asset('images/logo.png') }}" width="100" height="50" alt="TESLA Logo"> <span>Admin</span></a>
   <nav class="mt-4">
     <ul class="nav flex-column">
       <li class="nav-item">

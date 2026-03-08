@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Transactions - SUNHILL</title>
+  <title>Transactions - TELSA</title>
 
   <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -35,7 +35,7 @@
       left: 0;
       bottom: 0;
       width: 260px;
-      background: #0f0f0f;
+      background: black;
       border-right: 1px solid #222;
       padding: 1.5rem 1rem;
       overflow-y: auto;
@@ -142,7 +142,7 @@
 <!-- Sidebar Navigation -->
 <!-- Sidebar Navigation -->
 <aside class="sidebar">
-  <a href="{{ route('user.dashboard') }}" class="sidebar-brand">SUNHILL</a>
+  <a href="{{ route('user.dashboard') }}" class="sidebar-brand"><img src="{{ asset('images/logo.png') }}" width="100" height="50" alt="TESLA Logo"></a>
   <nav class="mt-4">
     <ul class="nav flex-column">
       <li class="nav-item">
@@ -221,6 +221,7 @@
                 <th scope="col">Description</th>
                 <th scope="col">Date</th>
                 <th scope="col">Status</th>
+                <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -230,13 +231,18 @@
 
 
               <tr>
-                <td>{{ $withdrawal->tx_ref }}</td>
+                <td>{{ $withdrawal->txn_id }}</td>
                 <td>Withdrawal</td>
-                <td class="text-danger">-${{ number_format($withdrawal->amount, 2) }}</td>
-                <td>{{ ucfirst($withdrawal->payment_method) }}</td>
-                <td>{{ $withdrawal->created_at->format('F j, Y g:i A') }}</td>
-                <td><span class="badge badge-withdrawal">Completed</span></td>
-                <td>
+                        <td class="text-danger">-${{ number_format($withdrawal->amount, 2) }}</td>
+                        <td>{{ $withdrawal->payment_method }}</td>
+                        <td>{{ $withdrawal->created_at->format('M d, Y') }}</td>
+                        <td>
+                            <span class="badge badge-{{ $withdrawal->status }}">
+                                {{ ucfirst($withdrawal->status) }}
+                            </span>
+                        </td>
+              </td>
+              <td>
                     <button class="btn btn-sm btn-outline-light"
                             data-bs-toggle="modal"
                             data-bs-target="#transactionModal"
@@ -259,6 +265,22 @@
                         No transactions found.
                     </td>
               @endforelse
+              @forelse ($deposits as $deposit)
+                <tr>
+                  <td>{{ $deposit->tx_ref }}</td>
+                  <td>{{ $deposit->user->name }} ({{ $deposit->user->username }})</td>
+                  <td class="text-success">+${{ number_format($deposit->amount, 2) }}</td>
+                  <td>{{ $deposit->payment_method }}</td>
+                  <td>{{ $deposit->created_at->format('M d, Y g:i A') }}</td>
+                  <td><span class="badge bg-{{ $deposit->status == 'approved' ? 'success' : ($deposit->status == 'rejected' ? 'danger' : 'warning') }}">{{ ucfirst($deposit->status) }}</span></td>
+                </tr>
+              @empty
+                <tr>
+                  <td colspan="7" class="text-center text-muted py-5">
+                    No deposits found.
+                  </td>
+                </tr>
+              @endforelse
 
             </tbody>
           </table>
@@ -277,7 +299,7 @@
     <div class="modal-content card-dark border-0 shadow-lg">
 
       <div class="modal-header border-bottom border-secondary">
-        <h5 class="modal-title fw-bold fs-4" id="transactionModalLabel">Transaction Details</h5>
+        <h5 class="modal-title fw-bold fs-4" id="transactionModalLabel"></h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
@@ -287,40 +309,40 @@
           <!-- Left Column -->
           <div class="col-md-6">
             <div class="mb-4">
-              <label class="form-label text-secondary fw-semibold small">Transaction ID</label>
-              <p class="fs-5 fw-bold mb-0" id="modalTxnId">TXN-987654321</p>
+              <label class="form-label text-secondary fw-semibold small"></label>
+              <p class="fs-5 fw-bold mb-0" id="modalTxnId"></p>
             </div>
 
             <div class="mb-4">
-              <label class="form-label text-secondary fw-semibold small">Type</label>
-              <p class="fs-5 fw-bold mb-0" id="modalType">Deposit</p>
+              <label class="form-label text-secondary fw-semibold small"></label>
+              <p class="fs-5 fw-bold mb-0" id="modalType"></p>
             </div>
 
             <div class="mb-4">
-              <label class="form-label text-secondary fw-semibold small">Amount</label>
-              <p class="fs-4 fw-bold mb-0 text-success" id="modalAmount">+$2,500.00</p>
+              <label class="form-label text-secondary fw-semibold small"></label>
+              <p class="fs-4 fw-bold mb-0 text-success" id="modalAmount"></p>
             </div>
 
             <div class="mb-4">
-              <label class="form-label text-secondary fw-semibold small">Status</label>
-              <span class="badge badge-deposit fs-6 px-3 py-2" id="modalStatus">Completed</span>
+              <label class="form-label text-secondary fw-semibold small"></label>
+              <span class="badge badge-deposit fs-6 px-3 py-2" id="modalStatus"></span>
             </div>
           </div>
 
           <!-- Right Column -->
           <div class="col-md-6">
             <div class="mb-4">
-              <label class="form-label text-secondary fw-semibold small">Date & Time</label>
-              <p class="fs-5 fw-bold mb-0" id="modalDate">February 20, 2026 14:35</p>
+              <label class="form-label text-secondary fw-semibold small"</label>
+              <p class="fs-5 fw-bold mb-0" id="modalDate"></p>
             </div>
 
             <div class="mb-4">
-              <label class="form-label text-secondary fw-semibold small">Description</label>
-              <p class="fs-5 mb-0" id="modalDescription">USDT (TRC20) deposit via wallet</p>
+              <label class="form-label text-secondary fw-semibold small"></label>
+              <p class="fs-5 mb-0" id="modalDescription"></p>
             </div>
 
             <div class="mb-4">
-              <label class="form-label text-secondary fw-semibold small">Wallet / Address</label>
+              <label class="form-label text-secondary fw-semibold small"></label>
               <div class="input-group input-group-sm">
                 <input type="text" class="form-control form-control-dark" id="modalWallet" value="rnUBfNn28ZU5kbvHCIMZhUc1WZ5d1qWZp" readonly>
                 <button class="btn btn-outline-success" type="button" onclick="copyWallet()">Copy</button>
@@ -328,7 +350,7 @@
             </div>
 
             <div class="mb-4">
-              <label class="form-label text-secondary fw-semibold small">Transaction Hash</label>
+              <label class="form-label text-secondary fw-semibold small"></label>
               <div class="input-group input-group-sm">
                 <input type="text" class="form-control form-control-dark" id="modalTxHash" value="0xabcdef1234567890..." readonly>
                 <button class="btn btn-outline-success" type="button" onclick="copyTxHash()">Copy</button>
@@ -347,6 +369,8 @@
     </div>
   </div>
 </div>
+
+
 
 <!-- JavaScript to populate modal dynamically -->
 <script>
