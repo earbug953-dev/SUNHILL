@@ -3,10 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard - TESLA</title>
+  <title>Dashboard - SUNHILL</title>
 
   <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
   <!-- Unicons -->
   <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.2.0/css/line.css">
@@ -18,6 +21,10 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
+    * {
+      transition: all 0.3s ease;
+    }
+
     body {
       font-family: 'Inter', sans-serif;
       background: #000;
@@ -32,11 +39,49 @@
       left: 0;
       bottom: 0;
       width: 260px;
-      background: black;
+      background: linear-gradient(180deg, #0a0a0a 0%, #0f0f0f 100%);
       border-right: 1px solid #222;
       padding: 1.5rem 1rem;
       overflow-y: auto;
+      z-index: 1001;
+      box-shadow: 2px 0 15px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Sidebar Toggle - Mobile */
+    .sidebar-toggle {
+      display: none;
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      background: #ef4444;
+      border: none;
+      color: white;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-size: 1.25rem;
+      cursor: pointer;
+      z-index: 1002;
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    }
+
+    .sidebar-toggle:hover {
+      background: #dc2626;
+      transform: scale(1.05);
+    }
+
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
       z-index: 1000;
+    }
+
+    .sidebar-overlay.active {
+      display: block;
     }
 
     .sidebar-brand {
@@ -45,26 +90,84 @@
       color: #fff;
       text-decoration: none;
       display: block;
-      padding: 1rem 0 2rem;
+      padding: 1.5rem 0 2rem;
       text-align: center;
-      border-bottom: 1px solid #222;
+      border-bottom: 1px solid #333;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, transparent, rgba(239, 68, 68, 0.1));
+      border-radius: 8px;
     }
 
     .nav-link {
-      color: #ccc;
-      padding: 0.75rem 1.25rem;
+      color: #a0a0a0;
+      padding: 0.85rem 1.25rem;
       border-radius: 8px;
       font-weight: 500;
       display: flex;
       align-items: center;
       gap: 12px;
-      margin: 0.25rem 0;
+      margin: 0.35rem 0;
+      position: relative;
+      overflow: hidden;
     }
 
-    .nav-link:hover,
-    .nav-link.active {
-      background: #1a1a1a;
+    .nav-link::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 4px;
+      height: 100%;
+      background: #ef4444;
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform 0.3s ease;
+    }
+
+    .nav-link:hover {
+      background: rgba(239, 68, 68, 0.1);
       color: #fff;
+      padding-left: 1.5rem;
+    }
+
+    .nav-link:hover::before {
+      transform: scaleY(1);
+    }
+
+    .nav-link.active {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      font-weight: 600;
+    }
+
+    .nav-link.active::before {
+      transform: scaleY(1);
+    }
+
+    .nav-link i {
+      font-size: 1.15rem;
+      min-width: 24px;
+    }
+
+    .logout-btn {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.05));
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #ef4444;
+      width: 100%;
+      margin-top: 1rem;
+      padding: 0.85rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.3s;
+    }
+
+    .logout-btn:hover {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.3), rgba(239, 68, 68, 0.1));
+      border-color: rgba(239, 68, 68, 0.5);
+      transform: translateX(5px);
     }
 
     /* Main content offset */
@@ -73,25 +176,59 @@
       padding: 2rem;
     }
 
+    /* Scrollbar styling */
+    .sidebar::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .sidebar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+      background: #333;
+      border-radius: 3px;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb:hover {
+      background: #444;
+    }
+
     @media (max-width: 992px) {
       .sidebar {
-        width: 220px;
+        width: 240px;
       }
       .main-content {
-        margin-left: 220px;
+        margin-left: 240px;
       }
     }
 
     @media (max-width: 768px) {
       .sidebar {
         width: 100%;
-        height: auto;
-        position: relative;
-        border-right: none;
-        border-bottom: 1px solid #222;
+        max-width: 260px;
+        height: 100vh;
+        left: -100%;
+        position: fixed;
+        border-right: 1px solid #222;
+        border-bottom: none;
       }
+
+      .sidebar.active {
+        left: 0;
+      }
+
       .main-content {
         margin-left: 0;
+        padding-top: 4rem;
+      }
+
+      .sidebar-toggle {
+        display: block;
+      }
+
+      .nav-link {
+        padding: 0.75rem 1rem;
       }
     }
 
@@ -109,10 +246,12 @@
       align-items: center;
       justify-content: space-between;
       transition: transform 0.2s;
+      border: 1px solid #333;
     }
 
     .stat-card:hover {
       transform: translateY(-4px);
+      border-color: #444;
     }
 
     .stat-icon {
@@ -144,55 +283,86 @@
       border-radius: 12px;
       padding: 1.5rem;
       height: 100%;
+      border: 1px solid #333;
+    }
+
+    .btn-warning {
+      background: #f59e0b;
+      border-color: #f59e0b;
+      color: #000;
+      font-weight: 600;
+    }
+
+    .btn-warning:hover {
+      background: #d97706;
+      border-color: #d97706;
+      color: #000;
     }
   </style>
 </head>
 <body>
 
+<!-- Sidebar Toggle Button -->
+<button class="sidebar-toggle" id="sidebarToggle">
+  <i class="bi bi-list"></i>
+</button>
+
+<!-- Sidebar Overlay (for mobile) -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
 <!-- Sidebar Navigation -->
-<aside class="sidebar">
-  <a href="{{ route('user.dashboard') }}" class="sidebar-brand"><img src="{{ asset('images/logo.png') }}" width="100" height="50" alt="TESLA Logo"></a>
+<aside class="sidebar" id="sidebar">
+  <a href="{{ route('user.dashboard') }}" class="sidebar-brand">
+    <img src="{{ asset('images/logo.png') }}" width="50%" height="50" alt="SUNHILL Logo">
+  </a>
+
   <nav class="mt-4">
     <ul class="nav flex-column">
       <li class="nav-item">
         <a class="nav-link active" href="{{ route('user.dashboard') }}">
-          <i class="uil uil-home"></i> Home
+          <i class="uil uil-home"></i>
+          <span>Home</span>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{{ route('user.packages') }}">
-          <i class="uil uil-package"></i> Packages
+          <i class="uil uil-package"></i>
+          <span>Packages</span>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{{ route('user.deposit') }}">
-          <i class="uil uil-dollar-sign"></i> Deposit
+          <i class="uil uil-dollar-sign"></i>
+          <span>Deposit</span>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{{ route('user.withdraw') }}">
-          <i class="uil uil-money-withdraw"></i> Withdraw
+          <i class="uil uil-money-withdraw"></i>
+          <span>Withdraw</span>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{{ route('user.transactions') }}">
-          <i class="uil uil-receipt"></i> Transactions
+          <i class="uil uil-receipt"></i>
+          <span>Transactions</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{{ route('user.profile') }}">
-          <i class="uil uil-user"></i> Profile
+        <a class="nav-link" href="{{ route('profile.edit') }}">
+          <i class="uil uil-user"></i>
+          <span>Profile</span>
         </a>
       </li>
-      <li class="nav-item">
-        <form method="POST" action="{{ url('/logout') }}"
-          onsubmit="return confirm('Are you sure you want to logout?')">
-          @csrf
-        <button class="nav-link text-danger border-0 bg-transparent">
-            <i class="bi bi-box-arrow-right me-2"></i> Logout
+
+      <!-- Logout Button -->
+      <form method="POST" action="{{ url('/logout') }}" style="display: contents;">
+        @csrf
+        <button type="submit" class="logout-btn" onclick="return confirm('Are you sure you want to logout?')">
+          <i class="bi bi-box-arrow-right"></i>
+          <span>Logout</span>
         </button>
-        </form>
-      </li>
+      </form>
     </ul>
   </nav>
 </aside>
@@ -279,16 +449,18 @@
 
     <!-- Active Investments -->
     <div class="no-investment mb-5">
-      <h2 class="mb-4">Active Investments</h2>
+      <h2 class="mb-4"><i class="bi bi-briefcase me-2"></i> Active Investments</h2>
       <p class="text-secondary mb-4">You do not have an active investment at the moment.</p>
-      <a href="{{ route('user.packages') }}" class="btn btn-warning btn-lg px-5 py-3 fw-semibold">Invest Now</a>
+      <a href="{{ route('user.packages') }}" class="btn btn-warning btn-lg px-5 py-3 fw-semibold">
+        <i class="bi bi-plus-circle me-2"></i> Invest Now
+      </a>
     </div>
 
     <!-- Market Overview + News -->
     <div class="row g-4">
       <div class="col-lg-6">
         <div class="market-col">
-          <h2 class="mb-4">Market Overview</h2>
+          <h2 class="mb-4"><i class="bi bi-graph-up me-2"></i> Market Overview</h2>
           <div class="tradingview-widget-container" style="height: 480px;">
             <div class="tradingview-widget-container__widget"></div>
             <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
@@ -327,7 +499,7 @@
 
       <div class="col-lg-6">
         <div class="market-col">
-          <h2 class="mb-4">Market News</h2>
+          <h2 class="mb-4"><i class="bi bi-newspaper me-2"></i> Market News</h2>
           <div class="tradingview-widget-container" style="height: 480px;">
             <div class="tradingview-widget-container__widget"></div>
             <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
@@ -353,12 +525,42 @@
 <!-- Footer -->
 <footer class="bg-black text-center py-4 border-top border-secondary mt-5">
   <p class="text-white-50 mb-0">
-    © <span id="year"></span> TESLA. All rights reserved.
+    © <span id="year"></span> SUNHILL. All rights reserved.
   </p>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
   document.getElementById("year").textContent = new Date().getFullYear();
+
+  // Sidebar Toggle Functionality
+  const sidebarToggle = document.getElementById('sidebarToggle');
+  const sidebar = document.getElementById('sidebar');
+  const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+  // Toggle sidebar on button click
+  sidebarToggle.addEventListener('click', function() {
+    sidebar.classList.toggle('active');
+    sidebarOverlay.classList.toggle('active');
+  });
+
+  // Close sidebar when overlay is clicked
+  sidebarOverlay.addEventListener('click', function() {
+    sidebar.classList.remove('active');
+    sidebarOverlay.classList.remove('active');
+  });
+
+  // Close sidebar when a nav link is clicked (on mobile)
+  const navLinks = document.querySelectorAll('.nav-link');
+  navLinks.forEach(link => {
+    link.addEventListener('click', function() {
+      if (window.innerWidth <= 768) {
+        sidebar.classList.remove('active');
+        sidebarOverlay.classList.remove('active');
+      }
+    });
+  });
 
   // Indices mock data (you can replace with real API later)
   const indices = [
@@ -402,20 +604,29 @@
         borderColor: '#22c55e',
         backgroundColor: 'rgba(34,197,94,0.15)',
         tension: 0.4,
-        fill: true
+        fill: true,
+        borderWidth: 2
       }]
     },
     options: {
       responsive: true,
-      plugins: { legend: { display: false } },
+      plugins: {
+        legend: { display: false }
+      },
       scales: {
-        y: { beginAtZero: false, grid: { color: '#222' } },
-        x: { grid: { display: false } }
+        y: {
+          beginAtZero: false,
+          grid: { color: '#222' },
+          ticks: { color: '#999' }
+        },
+        x: {
+          grid: { display: false },
+          ticks: { color: '#999' }
+        }
       }
     }
   });
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

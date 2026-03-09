@@ -230,7 +230,7 @@
             <h5 class="fw-bold mb-0">Active Plans</h5>
             <i class="bi bi-rocket-takeoff-fill stat-icon text-warning"></i>
           </div>
-          <h2 class="display-6 fw-bold mb-1">3,291</h2>
+          <h2 class="display-6 fw-bold mb-1">{{ number_format(App\Models\Package::activePackages(), 0) }}</h2>
           <p class="text-warning small mb-0">89 new today</p>
         </div>
       </div>

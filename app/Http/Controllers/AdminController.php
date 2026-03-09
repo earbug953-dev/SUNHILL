@@ -14,7 +14,8 @@ class AdminController extends Controller
     public function index() {
         $user = auth()->user();
         $deposit = Deposit::totalDeposits();
-        return view('admin.dashboard', compact('user', 'deposit'));
+        $package = Package::activePackages();
+        return view('admin.dashboard', compact('user', 'deposit', 'package') );
     }
 
     public function users() {

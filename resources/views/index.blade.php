@@ -196,14 +196,14 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <div class="container">
-        <a class="navbar-brand fw-bold fs-3" href="{{ route('home') }}"><img src="{{ asset('images/logo.png') }}" width="100" height="50" alt="TESLA Logo"></a>
+        <a class="navbar-brand fw-bold fs-3" href="{{ url('home') }}">
 
+                    <img src="{{ asset('images/logo.png') }}" width="50%" height="50"></a>
+            
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-
-        
         <div class="offcanvas offcanvas-end bg-dark" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title text-white" id="offcanvasNavbarLabel">Menu</h5>
@@ -211,20 +211,74 @@
             </div>
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    @auth
+                    <li class="nav-item"><a class="nav-link" href="{{ route('user.dashboard') }}">Dashboard</a></li>
+                    <li class="nav-item d-lg-none mt-3">
+                        <a href="{{ url('logout') }}" class="btn btn-primary w-100">Logout</a>
+                    </li>
 
 
+                    
+                    @else
+                    <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">HOME</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url('about') }}">ABOUT</a></li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">MARKETS</a>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                            <li><a class="dropdown-item" href="https://bitcoinworld.co.in/forex-news/" target="_blank">Forex</a></li>
+                            <li><a class="dropdown-item" href="https://bitcoinworld.co.in/crypto-news/" target="_blank">Cryptos</a></li>
+                            <li><a class="dropdown-item" href="#">Shares</a></li>
+                            <li><a class="dropdown-item" href="#">Indices</a></li>
+                            <li><a class="dropdown-item" href="#">Marijuana</a></li>
+                            <li><a class="dropdown-item" href="#">Energies</a></li>
+                            <li><a class="dropdown-item" href="#">Metals</a></li>
+                        </ul>
+                    </li>
+                    
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">TRADING</a>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                            <li><a class="dropdown-item" href="{{ url('register') }}">Platform</a></li>
+                            <li><a class="dropdown-item" href="{{ url('register') }}">Swaps</a></li>
+                            <li><a class="dropdown-item" href="{{ url('register') }}">Spreads and Commissions</a></li>
+                            <li><a class="dropdown-item" href="{{ url('register') }}">Trading Specifications</a></li>
+                            <li><a class="dropdown-item" href="{{ url('register') }}">PAMM</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">COMPANY</a>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                            <li><a class="dropdown-item" href="{{ url('register') }}">Why Us</a></li>
+                            <li><a class="dropdown-item" href="{{ url('register') }}">Contact</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item d-lg-none mt-3">
+                        <a href="{{ url('login') }}" class="btn btn-outline-light w-100 mb-2">Login</a>
+                        <a href="{{ url('register') }}" class="btn btn-primary w-100">Sign Up</a>
+                    </li>
+                    @endauth
                 </ul>
             </div>
         </div>
-
-        <!-- Desktop buttons -->
+        @auth
+            <!-- Desktop buttons -->
         <div class="d-none d-lg-flex gap-3">
-            <a href="{{ route('login') }}" class="btn btn-outline-light">Login</a>
-            <a href="{{ route('register') }}" class="btn btn-primary">Sign Up</a>
+            <a href="{{ url('logout') }}" class="btn btn-primary w-100">Logout</a>
         </div>
+        @else
+        <div class="d-none d-lg-flex gap-3">
+            <a href="{{ url('login') }}" class="btn btn-outline-light">Login</a>
+            <a href="{{ url('register') }}" class="btn btn-primary">Sign Up</a>
+        </div>
+
+        @endauth
+        
     </div>
 </nav>
-
 
 <!-- Hero Owl Carousel -->
 <div class="owl-carousel hero-owl">
@@ -771,7 +825,7 @@
   <div class="container">
     <div class="row g-5">
 
-      
+
 
     </div>
   </div>

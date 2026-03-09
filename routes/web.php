@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DepositsController;
 use App\Http\Controllers\PackagesController;
 use App\Http\Controllers\SettingsController;
@@ -11,6 +10,7 @@ use App\Models\Deposit;
 use App\Models\Package;
 use App\Models\Withdrawal;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return view('index');
@@ -20,23 +20,9 @@ Route::get('/about', function () {
     return view('about');
 })->name('about');
 
-Route::get('/register',function () {
-    return view('register');
-});
-
-Route::post('/register',[AuthController::class,'register'])->name('register');
-
-Route::get('/login',function () {
-    return view('login');
-});
-
-Route::post('/login',[AuthController::class,'login'])->name('login');
-
-Route::post('/logout',[AuthController::class, 'logout'])->name('logout');
 
 
-
-Route::prefix('user')->middleware(['auth'])->group(function () {
+Route::prefix('user')->middleware(['auth','verified'])->group(function () {
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
 
     Route::get('/deposit', function () {
@@ -47,14 +33,20 @@ Route::prefix('user')->middleware(['auth'])->group(function () {
     $packages = Package::where('active', true)
         ->orderBy('min_investment', 'asc')
         ->paginate(4);   // ← paginate directly on the query builder
+    $user = auth()->user();
+    $allPackages = Package::where('active', true)->get();
 
-        return view('user.packages', compact('packages'));
+    // Active purchased packages (pivot table)
+    $activePackages = $user->packages()
+        ->wherePivot('expires_at', '>=', now())
+        ->orWhereNull('expires_at') // lifetime
+        ->withPivot('created_at', 'expires_at', 'usage_count')
+        ->get();
+
+        return view('user.packages', compact('packages','allPackages', 'activePackages'));
     })->name('user.packages');
 
-    Route::get('/profile',[UserController::class,'profile'])->name('user.profile');
 
-    Route::put('/profile/{user}',[UserController::class, 'edit_profile'])->name('edit.profile');
-    Route::put('/password/{user}',[UserController::class, 'change_password'])->name('change.password');
     Route::get('/transactions', function () {
     $deposits = Deposit::where('user_id', auth()->id())
         ->latest()
@@ -117,3 +109,15 @@ Route::prefix('/admin')->middleware(['auth', 'admin'])->group(function () {
     [WithdrawalController::class, 'approve_withdrawal'])
     ->name('admin.withdrawal.approve');
 });
+
+
+
+
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
