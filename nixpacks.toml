@@ -1,13 +1,14 @@
 # nixpacks.toml
+
 [phases.setup]
-  nixPkgs = ['nodejs', 'libatomic1']   # ← this installs libatomic1
+  nixPkgs = ['nodejs', 'libatomic1']
 
 [phases.build]
   dependsOn = ['setup']
   cmds = [
-    'composer install --no-interaction --prefer-dist --optimize-autoloader',
-    'npm ci',                           # or npm install
-    'npm run build'                     # or npm run dev / prod depending on your setup
+    'composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev',
+    'npm ci --legacy-peer-deps',
+    'npm run build'
   ]
 
 [start]

@@ -1,20 +1,23 @@
-/* resources/css/app.css */
+/* resources/css/app.css - Standard Laravel + Tailwind + Vite setup */
 
-/* This imports Tailwind's base, components, and utilities */
+/* Tailwind directives - these MUST be present */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* You can add your custom styles below (optional) */
+/* Optional: your custom base styles (add whatever you need) */
 @layer base {
     body {
-        @apply bg-gray-950 text-gray-100 font-sans;
+        @apply bg-black text-white font-sans antialiased;
     }
 }
 
-/* Example custom utility (optional) */
+/* Optional: custom utilities or overrides */
 @layer utilities {
     .glass {
-        @apply bg-gray-900/60 backdrop-blur-md border border-gray-700/30;
+        @apply bg-gray-900/60 backdrop-blur-md border border-gray-700/30 rounded-xl;
+    }
+    .card-dark {
+        @apply bg-gray-900 border border-gray-800 rounded-xl shadow-2xl;
     }
 }

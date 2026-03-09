@@ -7,8 +7,9 @@ export default {
   ],
   theme: {
     extend: {
-      fontFamily: {
-        sans: ['Instrument Sans', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+      // Add your custom colors/fonts if needed
+      colors: {
+        primary: '#ef4444', // your red accent
       },
     },
   },
