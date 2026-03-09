@@ -1,15 +1,15 @@
 # nixpacks.toml
 
 [phases.setup]
-  nixPkgs = ['nodejs', 'libatomic1']
+nixPkgs = ['nodejs', 'libatomic1']
 
 [phases.build]
-  dependsOn = ['setup']
-  cmds = [
-    'composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev',
-    'npm ci --legacy-peer-deps',
-    'npm run build'
-  ]
+dependsOn = ['setup']
+cmds = [
+  'composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev',
+  'npm ci --legacy-peer-deps',
+  'npm run build'
+]
 
 [start]
-  cmd = 'php artisan serve --host 0.0.0.0 --port $PORT'
+cmd = "php artisan serve --host=0.0.0.0 --port=$PORT"
